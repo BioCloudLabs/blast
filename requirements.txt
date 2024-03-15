@@ -1,4 +1,8 @@
 quart
 flask-smorest
 python-dotenv
-quart-cors
+flask-cors
+psycopg2
+sqlalchemy
+flask-sqlalchemy
+flask-migrate
