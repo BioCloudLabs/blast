@@ -1,8 +1,0 @@
-quart
-flask-smorest
-python-dotenv
-flask-cors
-psycopg2
-sqlalchemy
-flask-sqlalchemy
-flask-migrate

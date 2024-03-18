@@ -1,0 +1,6 @@
+quart
+flask-smorest
+python-dotenv
+quart-cors
+pytest
+pytest-asyncio

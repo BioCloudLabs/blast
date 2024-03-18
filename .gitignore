@@ -1,5 +1,8 @@
-**/__pycache__
-.env
-.venv
+server/**/__pycache__
+server/.env
+server/.venv
 **/.DS_Store
-/node_modules
+client/node_modules
+.vscode
+server/**/.pytest_cache
+client/package-lock.json
