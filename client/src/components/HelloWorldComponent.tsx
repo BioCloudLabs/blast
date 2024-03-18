@@ -18,7 +18,7 @@ export const HelloWorldComponent = () => {
         .catch(error => {
             console.error(error.message);
         });
-    });
+    }, []);
 
     return (
         <div>{ helloWorldMessage }</div>
