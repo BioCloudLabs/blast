@@ -2,7 +2,6 @@ server/**/__pycache__
 server/.env
 server/.venv
 **/.DS_Store
+.idea
 client/node_modules
-.vscode
-server/**/.pytest_cache
 client/package-lock.json
