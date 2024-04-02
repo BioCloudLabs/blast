@@ -4,7 +4,14 @@ services:
     build: ./server
     ports:
       - '5000:5000'
+    networks:
+      - network
   client:
     build: ./client
     ports:
       - "80:5173"
+    networks:
+      - network
+networks:
+  network:
+    driver: bridge
