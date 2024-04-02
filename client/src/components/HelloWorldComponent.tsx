@@ -4,7 +4,8 @@ export const HelloWorldComponent = () => {
     const [helloWorldMessage, setHelloWorldMessage] = useState<string>('');
 
     useEffect(() => {
-        fetch('http://localhost:5000/')
+        console.log(window.location.hostname)
+        fetch(`http://${window.location.hostname}:5000/`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP Error: ${response.status}`);
