@@ -169,3 +169,4 @@ class BlastModel(Schema):
         file.save('files/sequence.fasta')
 
 
+
