@@ -1,101 +1,124 @@
-from marshmallow import Schema, validate, validates, ValidationError
+from marshmallow import Schema, validate, validates, ValidationError, validates_schema
 from marshmallow.validate import OneOf, Regexp
 from marshmallow.fields import Raw, String
 from werkzeug.datastructures import FileStorage
-from typing import Optional
+from typing import Optional, Dict, List
 from Bio import Entrez
 from Bio.Entrez import efetch
 from urllib.error import HTTPError
 from re import match
-from dataclasses import  dataclass
-
-@dataclass
-class Blast:
-    sequence: str # fasta sequence to compare
-    fasta: Optional[FileStorage] # fasta file to compare
-    genbank: Optional[str] # genbank accession number to fetch
-    database: str # ncbi database to fetch
-    algorithm: str # blast algorithm to calculate
 
 class BlastModel(Schema):
     """
     regex validates string starting with (^>),  one or more non-whitespace characters ((\S+)), optionally  whitespace
     (\s*) and additional characters ((.+))
     """
-    sequence: String = String(validate=Regexp(regex=r'^>?(\S+)\s*(.+)$', error=''), required=True)
+    sequence_regex: str = r'^>?(\S+)\s*(.+)$'
+    sequence_error: str = 'Invalid sequence pattern'
+    sequence_required: bool = True
+    # fasta sequence to compare
+    sequence: String = String(validate=Regexp(regex=sequence_regex, error=sequence_error), required=sequence_required)
 
-    fasta: Raw = Raw(metadata={'type': 'string','format': 'binary'})
+    fasta_metadata: Dict[str, str] = {'type': 'string', 'format': 'binary'}
+    fasta_required: bool = False
+    # fasta file to compare
+    fasta: Raw = Raw(metadata=fasta_metadata, required=fasta_required)
 
     """
     regex validates string starting with two uppercase letters (^[A-Z]{2}), optional underscore (_?) and one or more 
     digits (\d+), optionally dot and one or more digits ((\.\d+)?)
     """
-    genbank: String = String(validate=Regexp(regex=r'^[A-Z]{2}_?\d+(\.\d+)?', error=''))
+    genbank_regex: str = r'^[A-Z]{2}_?\d+(\.\d+)?'
+    genbank_error: str = 'Invalid GenBank accession number pattern'
+    genbank_required: bool = False
+    # genbank accession number to fetch
+    genbank: String = String(validate=Regexp(regex=genbank_regex, error=genbank_error), required=genbank_required)
 
     """
-    nr is a non-redundant protein sequence database 
-    nt is a non-redundant nucleotide sequence database
+    nr is a non-redundant protein sequence ncbi database 
+    nt is a non-redundant nucleotide sequence ncbi database
     """
-    database: String = String(validate=OneOf(choices=['nt', 'nr'], error=''), required=True)
+    database_choices: List[str] = ['nt', 'nr']
+    database_error: str = 'NCBI database not found'
+    database_required: bool = True
+    # ncbi database to fetch
+    database: String = String(validate=OneOf(choices=database_choices, error=database_error), required=database_required)
 
     """
+    blastp program fetch nr database using a protein query
+    blastn program fetch nt database using a nucleotide query
     """
-    algorithm: String = String(validate=OneOf(choices=['blastn', 'blastp'], error=''), required=True)
+    program_choices: List[str] = ['blastn', 'blastp']
+    program_error: str = 'BLAST program not found'
+    program_required: bool = True
+    # blast program to calculate
+    program: String = String(validate=OneOf(choices=program_choices, error=program_error), required=program_required)
 
     @staticmethod
-    def __save_sequence(sequence: str) -> None:
+    def save(sequence: str) -> None:
         """
-        creates fasta file, writes fasta sequence and saves it in 'files/' directory as 'sequence.fasta'
+        open fasta file, writes fasta sequence and saves it
         :param sequence: FASTA sequence to save
         :return: None
         """
-        with open(file='files/sequence.fasta', mode='w') as fasta:
+        file: str = 'files/sequence.fasta' # fasta sequence filepath
+        mode: str = 'w'
+        with open(file=file, mode=mode) as fasta:
             fasta.write(__s=sequence)
 
-    @validates('genbank')
-    def validates_genbank(self, genbank: str) -> None:
+    @validates_schema
+    def genbank(self, model: Dict[str, str | FileStorage]) -> None:
         """
-        fetchs genbank accession number to get the fasta file, creates fasta file, writes fasta sequence and saves it
-        in the 'files/' directory as 'sequence.fasta'
+        fetchs genbank accession number to get the fasta sequence and saves it
         :param genbank: genbank accession number to fetch
         :return: None
         """
-        if genbank:
-            try:
-                Entrez.email: str = 'info@biocloudlabs.es'
+        Entrez.email: str = 'info@biocloudlabs.es' # email required for fetching in entrez database
 
-                """
-                
-                """
-                BlastModel.__save_sequence(sequence=efetch(db='nuccore', id=genbank, rettype='fasta').read())
+        # databases available according to the program
+        DB: Dict[str, str] = {'blastp': 'protein', 'blastn': 'nucleotide'}
+        id: str = model['genbank']
+        RETTYPE: str = 'fasta' # response file type
+
+        if id: # validates genbank accession number content
+            try:
+                # fetchs genbank accession number to get the fasta sequence
+                sequence: str = efetch(db=DB[model['program']], id=id, rettype=RETTYPE).read()
+                BlastModel.save(sequence=sequence) # saves the fasta sequence
             except HTTPError:
-                raise ValidationError(message='GenBank not found')
+                message: str = 'GenBank accession number not found'
+                raise ValidationError(message=message)
 
     @validates('sequence')
-    def validates_sequence(self, sequence: str) -> None:
+    def sequence(self, sequence: str) -> None:
         """
-        create fasta file, writes fasta sequence and saves it in 'files/' directory as 'sequence.fasta'
+        saves fasta sequence
         :param sequence: fasta sequence to save
         :return: None
         """
-        BlastModel.__save_sequence(sequence=sequence)
+        BlastModel.save(sequence=sequence)
 
     @validates('fasta')
-    def validates_fasta(self, fasta: FileStorage) -> None:
+    def fasta(self, fasta: FileStorage) -> None:
         """
-        validates fasta file content and saves it in the 'files/' directory as 'sequence.fasta'
-        :param fasta: fasta file to validate and save
+        validates fasta sequence and saves it
+        :param fasta: fasta file to validate fasta sequence and save
         :return: None
         """
-        if fasta:
+        if fasta is not None:
             """
             regex validates string starting with (^>),  one or more non-whitespace characters ((\S+)), whitespace (\s*) 
             and additional characters ((.+))
             """
-            if not match(pattern=r'^>(\S+)\s+(.+)$', string=fasta.stream.read().decode()):
-                raise ValidationError(message='')
+            pattern: str = r'^>(\S+)\s+(.+)$'
+            string: str = fasta.stream.read().decode() # fasta sequence
 
-            fasta.save(dst='files/sequence.fasta')
+            if not match(pattern=pattern, string=string): # validates fasta sequence
+                message: str = 'Invalid FASTA file content pattern'
+                raise ValidationError(message=message)
+
+            dst: str = 'files/sequence.fasta' # fasta sequence filepath
+            fasta.save(dst=dst) # saves the fasta sequence
 
 
 
