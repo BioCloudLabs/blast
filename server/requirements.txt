@@ -1,5 +1,6 @@
-quart
+flask
 flask-smorest
 python-dotenv
-quart-cors
+flask-cors
 biopython
+python_on_whales
