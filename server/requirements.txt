@@ -3,4 +3,4 @@ flask-smorest
 python-dotenv
 flask-cors
 biopython
-python_on_whales
+docker
