@@ -3,7 +3,7 @@ from flask_smorest import Api
 from os import getenv
 from dotenv import load_dotenv
 from flask_cors import CORS
-from blast_view import blast_blueprint
+from view import blast_blueprint
 
 load_dotenv()
 

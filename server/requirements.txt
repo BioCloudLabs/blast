@@ -4,3 +4,4 @@ python-dotenv
 flask-cors
 biopython
 docker
+azure-storage-blob

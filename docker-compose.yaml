@@ -11,6 +11,7 @@ services:
       - API_TITLE=blast
       - API_VERSION=1
       - OPENAPI_VERSION=3.1.0
+      - AZURE_STORAGE_CONTAINER=blastdb
   node:
     build: ./client
     ports:
