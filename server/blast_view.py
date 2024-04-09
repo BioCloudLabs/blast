@@ -24,6 +24,6 @@ class BlastView(MethodView):
                 f'{getcwd()}/queries:/blast/queries',
                 f'{getcwd()}/blastdb:/blast/blastdb'
             ],
-            command=f"{payload['program']} -query /blast/queries/{payload['query']}.fasta -db {payload['blastdb']} -outfmt 15"
+            command=f"{payload['program']} -query /blast/queries/{payload['query']}.fasta -db {payload['db']} -outfmt 15"
         ))
 

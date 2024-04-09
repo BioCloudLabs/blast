@@ -1,21 +1,21 @@
-from marshmallow import Schema, post_load, ValidationError
-from marshmallow.validate import OneOf
+from marshmallow import Schema, post_load
 from marshmallow.fields import String
 from Bio import Entrez
 from Bio.Entrez import efetch
 from urllib.error import HTTPError
+from flask_smorest import abort
 
 class BlastSchema(Schema):
     """
     :param query:
-    :param blastdb:
+    :param db:
     :param program:
-    :param dbname:
+    :param molecule:
     """
     query: String = String(required=True)
-    blastdb: String = String(required=True)
-    program: String = String(validate=OneOf(choices=['blastp', 'blastn']), required=True)
-    dbname: String = String(validate=OneOf(choices=['protein', 'nucleotide']), required=True)
+    db: String = String(required=True)
+    program: String = String(required=True)
+    molecule: String = String(required=True)
 
     @post_load
     def post_load(self, schema: dict, **kwargs: dict) -> None:
@@ -29,8 +29,8 @@ class BlastSchema(Schema):
 
         try:
             with open(file=f"queries/{schema['query']}.fasta", mode='w+') as file:
-                file.write(efetch(db=schema['dbname'], id=schema['query'], rettype='fasta').read())
+                file.write(efetch(db=schema['molecule'], id=schema['query'], rettype='fasta').read())
         except HTTPError:
-            raise ValidationError(message='')
+            abort(http_status_code=422)
 
         return schema
