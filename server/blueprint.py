@@ -16,8 +16,8 @@ def blast(files, form):
     """
     This function performs a BLAST search using the provided query file and form data.
 
-    :param files: Uploaded files from the request
-    :param form: Form data from the request
+    :param files: request files object
+    :param form: request form object
     """
     try:
         return json.loads(
@@ -32,9 +32,7 @@ def blast(files, form):
             )
         )
     except docker.errors.ContainerError:
-        flask_smorest.abort(400)
-    except json.decoder.JSONDecodeError:
-        flask_smorest.abort(400)
+        flask_smorest.abort(400, message='Docker command error')
 
 
     
