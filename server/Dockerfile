@@ -3,8 +3,8 @@ FROM python:3.10-alpine
 WORKDIR /app
 
 RUN mkdir queries blastdb \
-    && apk add nfs-utils \
-    && mount -t nfs blastdb.biocloudlabs.es:/mnt/blastdb /app/blastdb
+    && apk add cifs-utils psmisc \
+    && mount -t cifs //blastdb.biocloudlabs.es/blastdb /app/blastdb -o guest
 
 COPY ./requirements.txt ./
 
