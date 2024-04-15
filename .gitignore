@@ -1,9 +1,7 @@
 # server
 server/blastdb
 server/queries
-server/results
 server/**/__pycache__
-server/.env
 server/.venv
 
 # client
@@ -11,4 +9,3 @@ client/node_modules
 client/package-lock.json
 
 **/.DS_Store
-.idea

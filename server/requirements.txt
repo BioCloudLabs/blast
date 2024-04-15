@@ -1,6 +1,4 @@
 flask
 flask-smorest
-python-dotenv
 flask-cors
-biopython
 docker

@@ -1,25 +1,18 @@
-from flask import Flask
-from flask_smorest import Api
-from os import getenv
-from dotenv import load_dotenv
-from flask_cors import CORS
-from view import blast_blueprint
+import flask
+import flask_smorest
+import flask_cors
+import blueprint
 
-load_dotenv()
+app = flask.Flask(__name__)
 
-app: Flask = Flask(import_name=__name__)
+app.config['API_TITLE'] = 'blast/api'
+app.config['API_VERSION'] = '0.0.1'
+app.config['OPENAPI_VERSION'] = '3.1.0'
 
-app.config['API_TITLE'] = getenv(key='API_TITLE')
-app.config['API_VERSION'] = getenv(key='API_VERSION')
-app.config['OPENAPI_VERSION'] = getenv(key='OPENAPI_VERSION')
-app.config["OPENAPI_URL_PREFIX"] = "/"
-app.config["OPENAPI_SWAGGER_UI_PATH"] = "/swagger-ui"
-app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
+api = flask_smorest.Api(app)
+api.register_blueprint(blueprint.blueprint)
 
-api: Api = Api(app=app)
-api.register_blueprint(blp=blast_blueprint)
-
-CORS(app=app, resources={r'*': {'origins': '*'}})
+flask_cors.CORS(app, resources={r'*': {'origins': '*'}})
 
 if __name__ == '__main__':
     app.run(debug=True)
