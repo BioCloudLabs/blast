@@ -12,12 +12,13 @@ blueprint = flask_smorest.Blueprint('blast', __name__)
 @blueprint.arguments(arguments.files.FilesSchema, location='files')
 @blueprint.arguments(arguments.form.FormSchema, location='form')
 @blueprint.response(200)
-def blast(files, form):
+def post(files, form):
     """
-    This function performs a BLAST search using the provided query file and form data.
+    runs 'ncbi/blast' docker image for local alignments
 
     :param files: request files object
     :param form: request form object
+    :return: local aligmment object
     """
     try:
         return json.loads(
@@ -32,7 +33,7 @@ def blast(files, form):
             )
         )
     except docker.errors.ContainerError:
-        flask_smorest.abort(400, message='Docker command error')
+        flask_smorest.abort(400, message='')
 
 
     

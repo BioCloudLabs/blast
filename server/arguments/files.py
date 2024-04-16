@@ -8,22 +8,22 @@ class FilesSchema(marshmallow.Schema):
     @marshmallow.validates('query')
     def validates(self, query):
         """
-        Validates the query file
+        validates FASTA file
 
-        :param query: 
+        :param query: FASTA file
         """
         if not query.filename.endswith(('.fasta', '.fas', '.fa', '.fna', '.ffn', '.faa', '.mpfa', 'frn')):
-            raise marshmallow.ValidationError('FASTA filename extension error')
+            raise marshmallow.ValidationError('FASTA filename extension not allowed')
         
         if not re.match(r'^>.*\s*\n[A-Za-z\n**-]+$', query.stream.read().decode()):
-            raise marshmallow.ValidationError('FASTA format error')
+            raise marshmallow.ValidationError('Invalid FASTA file format')
         
         query.stream.seek(0)
     
     @marshmallow.post_load
     def post_load(self, schema, **kwargs):
         """
-        Post-load method to save the query file
+        saves FASTA file
 
         :param schema: request files object 
         :return: request files object
