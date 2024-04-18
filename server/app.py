@@ -1,18 +1,18 @@
-import flask
-import flask_smorest
-import flask_cors
-import blueprint
+from flask import Flask
+from flask_smorest import Api
+from flask_cors import CORS
+from blueprint import blueprint
+from socket import socket
 
-app = flask.Flask(__name__)
+app = Flask(__name__)
 
 app.config['API_TITLE'] = 'blast/api'
 app.config['API_VERSION'] = '0.0.1'
 app.config['OPENAPI_VERSION'] = '3.1.0'
 
-api = flask_smorest.Api(app)
-api.register_blueprint(blueprint.blueprint)
+websocket.init_app(app)
 
-flask_cors.CORS(app, resources={r'*': {'origins': '*'}})
+api = Api(app)
+api.register_blueprint(blueprint)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+CORS(app, resources={r'*': {'origins': '*'}})

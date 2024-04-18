@@ -1,16 +1,16 @@
-import docker.errors
-import flask_smorest
-import json
-import docker
-import arguments.files
-import arguments.form
-import os
+from docker.errors import ContainerError
+from flask_smorest import Blueprint, abort
+from json import loads
+from docker import from_env
+from arguments.files import FilesSchema
+from arguments.form import FormSchema
+from os import getcwd
 
-blueprint = flask_smorest.Blueprint('blast', __name__)
+blueprint = Blueprint('blast', __name__)
 
 @blueprint.route('/blast', methods=['POST'])
-@blueprint.arguments(arguments.files.FilesSchema, location='files')
-@blueprint.arguments(arguments.form.FormSchema, location='form')
+@blueprint.arguments(FilesSchema, location='files')
+@blueprint.arguments(FormSchema, location='form')
 @blueprint.response(200)
 def post(files, form):
     """
@@ -21,19 +21,19 @@ def post(files, form):
     :return: local aligmment object
     """
     try:
-        return json.loads(
-            docker.from_env().containers.run(
+        return loads(
+            from_env().containers.run(
                 'ncbi/blast',
                 command=f"{form['program']} -query /blast/queries/{files['query'].filename} -db {form['database']} -outfmt 15",
                 remove=True,
                 volumes=[
-                    f'{os.getcwd()}/blastdb:/blast/blastdb',
-                    f'{os.getcwd()}/queries:/blast/queries'
+                    f'{getcwd()}/blastdb:/blast/blastdb',
+                    f'{getcwd()}/queries:/blast/queries'
                 ]
             )
         )
-    except docker.errors.ContainerError:
-        flask_smorest.abort(400, message='')
+    except ContainerError:
+        abort(400)
 
 
     

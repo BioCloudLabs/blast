@@ -1,34 +1,46 @@
-import marshmallow
-import marshmallow.fields
-import re
+from marshmallow import Schema, post_load, validates, ValidationError
+from marshmallow.fields import Raw
+from re import match
+from typing import Dict, Any
+from werkzeug.datastructures import FileStorage
 
-class FilesSchema(marshmallow.Schema):
-    query = marshmallow.fields.Raw(metadata={'type': 'string', 'format': 'binary'}, required=True)
+METADATA: Dict[str, str] = {
+    'type': 'string',
+    'format': 'binary'
+}
 
-    @marshmallow.validates('query')
-    def validates(self, query):
+PATTERN: str = r'^>.*\s*\n[A-Za-z\n**-]+$'
+
+class FilesSchema(Schema):
+    query: Raw = Raw(metadata=METADATA, required=True)
+
+    @validates('query')
+    def validates(self, storage: FileStorage):
         """
         validates FASTA file
 
-        :param query: FASTA file
+        :param storage: FASTA file
         """
-        if not query.filename.endswith(('.fasta', '.fas', '.fa', '.fna', '.ffn', '.faa', '.mpfa', 'frn')):
-            raise marshmallow.ValidationError('FASTA filename extension not allowed')
+        string: str = storage.stream.read().decode()
+
+        if not match(PATTERN, string):
+            raise ValidationError('')
         
-        if not re.match(r'^>.*\s*\n[A-Za-z\n**-]+$', query.stream.read().decode()):
-            raise marshmallow.ValidationError('Invalid FASTA file format')
-        
-        query.stream.seek(0)
+        storage.stream.seek(0)
     
-    @marshmallow.post_load
-    def post_load(self, schema, **kwargs):
+    @post_load
+    def post_load(self, object: Dict[str, FileStorage], **kwargs: Dict[str, Any]):
         """
         saves FASTA file
 
-        :param schema: request files object 
+        :param object: request files object 
         :return: request files object
         """
-        schema['query'].save(f"queries/{schema['query'].filename}")  
+        storage: FileStorage = object['query']
 
-        return schema
+        dst: str = f'queries/{storage.filename}'
+
+        storage.save(dst)  
+
+        return object
 
