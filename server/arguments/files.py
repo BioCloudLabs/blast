@@ -1,46 +1,31 @@
 from marshmallow import Schema, post_load, validates, ValidationError
 from marshmallow.fields import Raw
 from re import match
-from typing import Dict, Any
-from werkzeug.datastructures import FileStorage
-
-METADATA: Dict[str, str] = {
-    'type': 'string',
-    'format': 'binary'
-}
-
-PATTERN: str = r'^>.*\s*\n[A-Za-z\n**-]+$'
 
 class FilesSchema(Schema):
-    query: Raw = Raw(metadata=METADATA, required=True)
+    query = Raw(metadata={'type': 'string', 'format': 'binary'}, required=True)
 
     @validates('query')
-    def validates(self, storage: FileStorage) -> None:
+    def validates(self, storage):
         """
         validates FASTA file
 
         :param storage: FASTA file
         """
-        string: str = storage.stream.read().decode()
-
-        if not match(PATTERN, string):
+        if not match(r'^>.*\s*\n[A-Za-z\n**-]+$', storage.stream.read().decode()):
             raise ValidationError('')
         
         storage.stream.seek(0)
     
     @post_load
-    def post_load(self, object: Dict[str, FileStorage], **kwargs: Dict[str, Any]) -> Dict[str, FileStorage]:
+    def post_load(self, object):
         """
         saves FASTA file
 
         :param object: request files object 
         :return: request files object
         """
-        storage: FileStorage = object['query']
-
-        dst: str = f'queries/{storage.filename}'
-
-        storage.save(dst)  
+        object['query'].save(f"queries/{object['query'].filename}")
 
         return object
 
