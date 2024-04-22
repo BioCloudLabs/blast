@@ -3,17 +3,17 @@ from shutil import disk_usage
 from psutil import cpu_percent, virtual_memory
 from typing import Dict
 
-socket: SocketIO = SocketIO(cors_allowed_origins='*')
+EVENT: str = 'virtual_machine'
 
-@socket.on('azure')
-def handle_azure() -> Dict[str, float | Dict[str, float]]:
+flask_socketio: SocketIO = SocketIO(cors_allowed_origins='*')
+
+@flask_socketio.on('azure')
+def handler() -> None:
     total, used, free: float = round(disk_usage('/') / (1024**3), 1)
 
     cpu: float = cpu_percent()
 
     memory: float = virtual_memory().percent
-
-    event: str = ''
 
     args: Dict[str, float | Dict[str, float]] = {
         'disk': {
@@ -24,5 +24,7 @@ def handle_azure() -> Dict[str, float | Dict[str, float]]:
         'cpu': cpu,
         'memory': memory
     }
+
+    flask_socketio.emit(EVENT, args)
    
     

@@ -15,7 +15,7 @@ class FilesSchema(Schema):
     query: Raw = Raw(metadata=METADATA, required=True)
 
     @validates('query')
-    def validates(self, storage: FileStorage):
+    def validates(self, storage: FileStorage) -> None:
         """
         validates FASTA file
 
@@ -29,7 +29,7 @@ class FilesSchema(Schema):
         storage.stream.seek(0)
     
     @post_load
-    def post_load(self, object: Dict[str, FileStorage], **kwargs: Dict[str, Any]):
+    def post_load(self, object: Dict[str, FileStorage], **kwargs: Dict[str, Any]) -> Dict[str, FileStorage]:
         """
         saves FASTA file
 
