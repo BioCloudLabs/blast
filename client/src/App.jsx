@@ -1,9 +1,13 @@
 import { Form } from "./components/Form"
 
+import { extendTheme } from "@chakra-ui/react"
+
 export const App = () => {
   return (
     <>
-      <Form />
+      <div style={{ fontFamily: 'Geist' }}>
+        <Form />
+      </div>
     </>
   )
 }

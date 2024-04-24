@@ -1,14 +1,15 @@
 import {
-    Button, 
     Card, 
     CardBody, 
-    Image, 
-    Stack, 
+    SimpleGrid,
     Heading, 
     Text, 
     Divider, 
-    CardFooter
+    CardFooter,
+    Stack
 } from '@chakra-ui/react';
+
+import { Button } from './Button';
 
 const programs = [
     {
@@ -40,31 +41,28 @@ const programs = [
 export const Programs = () => {
     return (
         <>
-            <Stack direction="row" spacing={4}>
+            <SimpleGrid  columns={{sm: 1, md: 2, lg: 4}} spacing={4} className='p-6 '>
                 {programs.map((program, index) => (
-                    <Card maxW='sm' key={index}>
-                        <CardBody>
-                            <Image
-                                src={program.src}
-                                alt={program.alt}
-                                borderRadius='lg'
-                            />
-                            <Stack mt='6' spacing='3'>
-                                <Heading size='md'>{program.heading}</Heading>
-                                <Text>
-                                    {program.text}
-                                </Text>
-                            </Stack>
-                        </CardBody>
-                        <Divider />
-                        <CardFooter>
-                            <Button variant='solid' colorScheme='blue'>
-                                BLAST
-                            </Button>
-                        </CardFooter>
-                    </Card>
+                    <div className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg bg-gradient-to-br from-green-400 to-blue-600 focus:ring-4 focus:outline-none focus:ring-green-200">
+                        <Card maxW='sm' key={index} className='p-2' style={{ boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.25)'}}>
+                            <CardBody>
+                                <Stack mt='6' spacing='3'>
+                                    <Heading size='md' style={{ fontFamily: 'Geist' }}>{program.heading}</Heading>
+                                    <Text>
+                                        {program.text}
+                                    </Text>
+                                </Stack>
+                            </CardBody>
+                            <Divider />
+                            <CardFooter>
+                                <Button>
+                                    Select
+                                </Button>
+                            </CardFooter>
+                        </Card>
+                    </div>
                 ))}
-            </Stack> 
+            </SimpleGrid> 
         </>
     )
 }

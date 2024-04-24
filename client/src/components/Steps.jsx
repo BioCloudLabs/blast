@@ -7,15 +7,13 @@ import {
     StepNumber, 
     Box, 
     StepTitle, 
-    StepSeparator
+    StepSeparator,
 } from '@chakra-ui/react'
 
 import {
     FaDna, 
     FaDatabase, 
-    FaTerminal, 
-    FaTimesCircle, 
-    FaCheck
+    FaTerminal
 } from 'react-icons/fa'
 
 const steps = [
@@ -32,19 +30,19 @@ const steps = [
         as: FaTerminal,
     },
   ]
-
+  
 export const Steps = ({ activeStep }) => {
     return (
         <>
-            <div className='container mx-auto'>
-                <Stepper index={activeStep}>
+            <div className='container mx-auto mb-12 mt-12 p-6'>
+                <Stepper index={activeStep} size='lg'>
                     {steps.map((step, index) => (
                         <Step key={index}>
                             <StepIndicator>
                                 <StepStatus
-                                    complete={<StepIcon as={step.as}/>}
-                                    incomplete={<StepNumber as={FaTimesCircle}/>}
-                                    active={<StepNumber as={FaCheck}/>} 
+                                    complete={<StepIcon as={step.as} />}
+                                    incomplete={<StepNumber as={step.as}/>}
+                                    active={<StepNumber as={step.as}/>} 
                                 />
                             </StepIndicator>
                             <Box>
