@@ -1,20 +1,5 @@
-import {
-    Stepper,
-    Step, 
-    StepIndicator, 
-    StepStatus, 
-    StepIcon, 
-    StepNumber, 
-    Box, 
-    StepTitle, 
-    StepSeparator,
-} from '@chakra-ui/react'
-
-import {
-    FaDna, 
-    FaDatabase, 
-    FaTerminal
-} from 'react-icons/fa'
+import { Stepper, Step, StepIndicator, StepStatus, StepIcon, StepNumber, Box, StepTitle } from '@chakra-ui/react'
+import { FaDna, FaDatabase, FaTerminal } from 'react-icons/fa'
 
 const steps = [
     {
@@ -34,7 +19,7 @@ const steps = [
 export const Steps = ({ activeStep }) => {
     return (
         <>
-            <div className='container mx-auto mb-12 mt-12 p-6'>
+            <div className='flex justify-center items-center mb-24 mx-6 mt-24'>
                 <Stepper index={activeStep} size='lg'>
                     {steps.map((step, index) => (
                         <Step key={index}>
@@ -48,7 +33,6 @@ export const Steps = ({ activeStep }) => {
                             <Box>
                                 <StepTitle>{ step.title }</StepTitle>
                             </Box>
-                            <StepSeparator />
                         </Step>
                     ))}
                 </Stepper>

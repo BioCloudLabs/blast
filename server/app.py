@@ -8,7 +8,7 @@ from shutil import disk_usage
 from psutil import cpu_percent, virtual_memory
 
 app = Flask(__name__)
-CORS(app, resources={r'*': {'origins': f"http://{get('https://api.ipify.org').text}:8080"}})
+CORS(app, resources={r'*': {'origins': "*"}})
 
 app.config['API_TITLE'] = 'blast/api'
 app.config['API_VERSION'] = '0.0.1'
@@ -24,12 +24,15 @@ def handler():
     total, used, free = round(disk_usage('/') / (1024**3), 1)
 
     socketio.emit(
-        'disk': {
+        'vm',
+        {
+            'disk': {
             'total': total,
             'used': used,
             'free': free
-        },
-        'cpu': cpu_percent(),
-        'memory': virtual_memory().percent
+            },
+            'cpu': cpu_percent(),
+            'memory': virtual_memory().percent
+        }
     )
 

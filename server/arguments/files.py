@@ -18,7 +18,7 @@ class FilesSchema(Schema):
         storage.stream.seek(0)
     
     @post_load
-    def post_load(self, object):
+    def post_load(self, object, **kwargs):
         """
         saves FASTA file
 

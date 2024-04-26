@@ -1,8 +1,8 @@
-export const Database = () => {
+export const Select = ({ value, setValue }) => {
     return (
         <>
-            <div className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
-                <select id="countries" className="text-center bg-slate-200 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-96 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <div className="p-0.5 rounded-lg bg-gradient-to-br from-green-400 to-blue-600 mb-12">
+                <select className="text-center bg-slate-200 rounded-lg w-96 p-2.5 focus:outline-none" value={value} onChange={(event) => setValue(event.target.value)}>
                     <option value="16S_ribosomal_RNA">16S ribosomal RNA (Bacteria and Archaea type strains)</option>
                     <option value="18S_fungal_sequences">18S ribosomal RNA sequences (SSU) from Fungi type and reference material</option>
                     <option value="28S_fungal_sequences">28S ribosomal RNA sequences (LSU) from Fungi type and reference material</option>
@@ -37,7 +37,9 @@ export const Database = () => {
                     <option value="cdd">Conserved Domain Database (CDD) is a collection of well-annotated multiple sequence alignment models reprepresented as position-specific score matrices</option>
                 </select>
             </div>
-
+            <div className="text-center">
+                {!value && 'No Search Set Choosed'}
+            </div>
         </>
     )
 }
