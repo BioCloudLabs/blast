@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  app:
+    build: ./
+    ports:
+      - '443:443'
+    volumes:
+      - /etc/ssl/certs/biocloudlabs.cer:/etc/ssl/certs/biocloudlabs.cer
+      - /etc/ssl/private/biocloudlabs.key:/etc/ssl/private/biocloudlabs.key

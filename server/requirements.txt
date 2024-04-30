@@ -1,6 +1,0 @@
-flask
-flask-smorest
-flask-cors
-docker
-flask-socketio
-psutil
