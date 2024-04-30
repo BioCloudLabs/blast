@@ -1,11 +1,8 @@
-# server
-server/blastdb
-server/queries
-server/**/__pycache__
-server/.venv
-
-# client
-client/node_modules
-client/package-lock.json
-
+blastdb/
+queries/
+results/
+**/__pycache__
+.venv/
+static/node_modules
+static/package-lock.json
 **/.DS_Store

@@ -1,8 +1,11 @@
 from flask import Flask
 from flask_smorest import Api
 from view import blp
+from flask_cors import CORS
 
 app = Flask(__name__)
+
+CORS(app, resources={r'*': {'origins': '*'}})
 
 app.config['API_TITLE'] = 'blast'
 app.config['API_VERSION'] = '0.0.1'
