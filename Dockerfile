@@ -6,7 +6,9 @@ RUN apt-get update && \
     python3 \
     python3-pip
 
-RUN mkdir blastdb
+RUN mkdir blastdb \
+    queries \
+    results
 
 COPY ./requirements.txt /var/www/blast/requirements.txt
 RUN pip install -r /var/www/blast/requirements.txt
