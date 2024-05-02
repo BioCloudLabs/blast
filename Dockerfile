@@ -17,7 +17,9 @@ RUN pip install -r /var/www/blast/requirements.txt
 
 RUN cd /var/www/blast/static && \
     npm install && \
-    npm run build
+    npm audit fix --force && \
+    npm run build 
+
 
 RUN mv /var/www/blast/httpd.conf /etc/apache2/sites-available/httpd.conf
 
