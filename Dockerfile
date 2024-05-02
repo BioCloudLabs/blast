@@ -4,20 +4,27 @@ RUN apt-get update && \
     apt-get install -y apache2 \
     libapache2-mod-wsgi-py3 \
     python3 \
-    python3-pip 
+    python3-pip \
+    npm \
+    wget
 
-RUN mkdir blastdb
-
-COPY ./requirements.txt /var/www/blast/requirements.txt
-RUN pip install -r /var/www/blast/requirements.txt
-
-COPY ./httpd.conf /etc/apache2/sites-available/httpd.conf
+RUN wget -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs
 
 COPY ./ /var/www/blast
 
+RUN pip install -r /var/www/blast/requirements.txt
+
+RUN cd /var/www/blast/static && \
+    npm install && \
+    npm run build
+
+RUN mv /var/www/blast/httpd.conf /etc/apache2/sites-available/httpd.conf
+
 RUN a2dissite 000-default.conf
-RUN a2ensite httpd.conf
+RUN a2enmod headers
 RUN a2enmod ssl
+RUN a2ensite httpd.conf
 
 EXPOSE 443
 

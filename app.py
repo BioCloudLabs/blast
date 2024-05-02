@@ -2,8 +2,13 @@ from flask import Flask
 from flask_smorest import Api
 from blueprint import blueprint
 from flask_cors import CORS
+from os import getcwd
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder=f'{getcwd()}/static/dist', static_url_path='/')
+
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
 
 CORS(app, resources={r'*': {'origins': '*'}})
 
