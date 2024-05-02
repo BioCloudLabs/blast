@@ -38,7 +38,7 @@ function Web() {
         form_data.append('db', db)
         form_data.append('program', program)
 
-        const response = await fetch(`http://${window.location.hostname}/blast`, {
+        const response = await fetch(`http://${window.location.hostname}:5000/blast`, {
             method: 'POST',
             body: form_data
         })

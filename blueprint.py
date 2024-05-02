@@ -35,7 +35,7 @@ def view(files, form):
                 ]
             )
             
-            return send_file(BytesIO(container), mimetype='application/octet-stream', as_attachment=True, download_name='blast.out')
+            return send_file(BytesIO(container), mimetype='application/octet-stream')
         except ContainerError as error:
             abort(400, message=error.exit_status)
     
