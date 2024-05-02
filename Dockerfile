@@ -8,7 +8,7 @@ RUN apt-get update && \
     npm \
     wget
 
-RUN wget -O- https://deb.nodesource.com/setup_20.x | bash && \
+RUN wget -O- https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs
 
 COPY ./ /var/www/blast
