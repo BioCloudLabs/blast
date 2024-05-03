@@ -8,34 +8,41 @@ from tempfile import NamedTemporaryFile
 from os.path import basename, dirname
 from io import BytesIO
 
-blueprint = Blueprint('blast', __name__)
+blp = Blueprint('blast', __name__)
 
-@blueprint.route('/blast', methods=['POST'])
-@blueprint.arguments(Files, location='files')
-@blueprint.arguments(Form, location='form')
-@blueprint.response(200)
+@blp.route('/blast', methods=['POST'])
+@blp.arguments(Files, location='files')
+@blp.arguments(Form, location='form')
+@blp.response(200)
 def view(files, form):
     """
     runs ncbi/blast docker image
     :param files: request files object 
     :param form: request form object
     """
-    with NamedTemporaryFile(suffix='.fasta') as temporary_file:
-        temporary_file.write(files.get('query').stream.read())
-        temporary_file.seek(0)
+    query = files.get('query')
+    program = form.get('program')
+    db = form.get('db')
+    outfmt = form.get('outfmt')
+
+    with NamedTemporaryFile(suffix='.fasta') as fp:
+        name = fp.name
+
+        fp.write(query.stream.read())
+        fp.seek(0)
 
         try:
-            container = from_env().containers.run(
+            out = from_env().containers.run(
                 'ncbi/blast',
-                f"{form.get('program')} -query /blast/queries/{basename(temporary_file.name)} -db {form.get('db')}",
+                f"{program} -query /blast/queries/{basename(name)} -db {db} -outfmt {outfmt}",
                 remove=True,
                 volumes=[
                     f'{getcwd()}/blastdb:/blast/blastdb',
-                    f'{dirname(temporary_file.name)}:/blast/queries'
+                    f'{dirname(name)}:/blast/queries'
                 ]
             )
-            
-            return send_file(BytesIO(container), mimetype='application/octet-stream')
-        except ContainerError as error:
-            abort(400, message=error.exit_status)
+
+            return send_file(BytesIO(out), mimetype='application/octet-stream')
+        except ContainerError:
+            abort(400)
     

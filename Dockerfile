@@ -11,13 +11,17 @@ RUN apt-get update && \
 RUN wget -O- https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs
 
+RUN mkdir -p /var/www/blast/blastdb && \
+    wget -P /var/www/blast/blastdb ftp://ftp.ncbi.nih.gov/blast/db/env_nt.tar.gz && \
+    tar -zxvf /var/www/blast/blastdb/env_nt.tar.gz && \
+    rm /var/www/blast/blastdb/env_nt.tar.gz
+
 COPY ./ /var/www/blast
 
 RUN pip install -r /var/www/blast/requirements.txt
 
 RUN cd /var/www/blast/static && \
     npm install && \
-    npm audit fix --force && \
     npm run build 
 
 
