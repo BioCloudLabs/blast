@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-WORKDIR /var/www/blast
+WORKDIR /var/www/app
 
 COPY . .
 
@@ -12,16 +12,15 @@ RUN apk update && \
         py3-pip \
         nodejs \
         npm \
-        nfs-utils && \
+        cifs-utils && \
     rm -rf /var/cache/apk/* && \
     mkdir blastdb queries results && \
-    mount -t nfs 4.233.220.168:/mnt/blastdb blastdb && \
+    mount -t cifs //blastdb.biocloudlabs.es/blastdb blastdb/ && \
     pip install --no-cache-dir -r requirements.txt && \
     npm install --prefix static && \
     npm run build --prefix static && \
     mv httpd.conf /etc/apache2/sites-available/httpd.conf && \
     a2dissite 000-default.conf && \
-    a2enmod headers && \
     a2enmod ssl && \
     a2ensite httpd.conf
 

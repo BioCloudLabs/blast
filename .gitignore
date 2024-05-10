@@ -1,6 +1,8 @@
 blastdb/
 queries/
 results/
+fasta/
+blastdb_custom/
 **/__pycache__
 .venv/
 static/node_modules
