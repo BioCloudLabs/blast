@@ -1,8 +1,8 @@
 from flask import Flask
 from flask_smorest import Api
-from controller import blueprint
+from blast import blueprint
 from flask_cors import CORS
-from config import Config
+from json import load
 
 app = Flask(__name__, static_folder='static/dist/')
 
@@ -12,7 +12,7 @@ def view():
 
 CORS(app, resources={r'*': {'origins': '*'}})
 
-app.config.from_object(Config)
+app.config.from_file('config.json', load=load)
 
 api = Api(app)
 api.register_blueprint(blueprint)

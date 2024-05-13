@@ -1,6 +1,6 @@
 from docker.errors import ContainerError
 from docker import from_env
-from exception import Exception
+from exit import Exit
 
 class Container:
     @staticmethod
@@ -14,7 +14,7 @@ class Container:
         try:
             from_env().containers.run(
                 'ncbi/blast',
-                f'blastn -query /blast/queries/{query} -db {db} -out /blast/results/{out} -html',
+                f'blastp -query /blast/queries/{query} -db {db} -out /blast/results/{out} -html',
                 remove=True,
                 volumes=[
                     f'{cwd}/blastdb:/blast/blastdb',
@@ -23,4 +23,4 @@ class Container:
                 ]
             )
         except ContainerError as container:
-            raise Exception(container.exit_status)
+            raise Exit(container.exit_status)

@@ -1,4 +1,4 @@
-class Exception(Exception):
+class Exit(Exception):
     def __init__(self, status: int) -> None:
         self.status = status
 
