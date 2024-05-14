@@ -1,21 +1,21 @@
-FROM alpine:latest
+FROM debian:bullseye-slim
 
 WORKDIR /var/www/app
 
 COPY . .
 
-RUN apk update && \
-    apk add --no-cache \
+RUN apt-get update && \
+    apt-get install -y \
         apache2 \
-        apache2-mod-wsgi \
+        libapache2-mod-wsgi-py3 \
         python3 \
-        py3-pip \
-        nodejs \
+        python3-pip \
         npm \
-        cifs-utils && \
-    rm -rf /var/cache/apk/* && \
+        wget && \
+    wget -O- https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    rm -rf /var/cache/apt/* && \
     mkdir blastdb queries results && \
-    mount -t cifs //blastdb.biocloudlabs.es/blastdb blastdb/ && \
     pip install --no-cache-dir -r requirements.txt && \
     npm install --prefix static && \
     npm run build --prefix static && \
