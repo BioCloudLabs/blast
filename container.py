@@ -4,7 +4,7 @@ from exit import Exit
 
 class Container:
     @staticmethod
-    def run(query: str, db: str, out: str, cwd: str) -> None:
+    def run(query: str, db: str, out: str) -> None:
         """
         :param query:
         :param db:
@@ -17,9 +17,9 @@ class Container:
                 f'blastp -query /blast/queries/{query} -db {db} -out /blast/results/{out} -html',
                 remove=True,
                 volumes=[
-                    f'{cwd}/blastdb:/blast/blastdb',
-                    f'{cwd}/queries:/blast/queries',
-                    f'{cwd}/results:/blast/results'
+                    f'/home/azure/blastdb:/blast/blastdb',
+                    f'/home/azure/queries:/blast/queries',
+                    f'/home/azure/results:/blast/results'
                 ]
             )
         except ContainerError as container:

@@ -5,7 +5,6 @@ from schema.form import Form
 from typing import Dict
 from werkzeug.datastructures import FileStorage
 from exit import Exit
-from os import getcwd
 from flask.views import MethodView
 
 blueprint = Blueprint('blast', __name__)
@@ -21,6 +20,6 @@ class Blast(MethodView, Container):
         :param form:
         """
         try:
-            self.run(files['query'].filename, form['db'], form['out'], getcwd())
+            self.run(files['query'].filename, form['db'], form['out'])
         except Exit as message:
             abort(400, message=message.__str__())

@@ -15,18 +15,18 @@ RUN apt-get update && \
     wget -O- https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs && \
     rm -rf /var/cache/apt/* && \
-    mkdir blastdb queries results && \
     pip install --no-cache-dir -r requirements.txt && \
     npm install --prefix static && \
     npm run build --prefix static && \
     mv httpd.conf /etc/apache2/sites-available/httpd.conf && \
     a2dissite 000-default.conf && \
     a2enmod ssl && \
+    a2enmod headers && \
     a2ensite httpd.conf
 
 EXPOSE 443
 
-CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+CMD ["chmod", "666", "/var/run/docker.sock", "&&", "/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
 
 
 
