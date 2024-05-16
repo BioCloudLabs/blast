@@ -14,7 +14,7 @@ class Container:
         try:
             from_env().containers.run(
                 'ncbi/blast',
-                f'blastp -query /blast/queries/{query} -db {db} -out /blast/results/{out} -html',
+                f'blastn -query /blast/queries/{query} -db {db} -out /blast/results/{out} -html',
                 remove=True,
                 volumes=[
                     f'/home/azure/blastdb:/blast/blastdb',
