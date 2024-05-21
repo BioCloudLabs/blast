@@ -1,5 +1,4 @@
 import { Formik, Field, Form, ErrorMessage } from 'formik'
-import { saveAs } from 'file-saver'
 import { useState } from 'react'
 import { genomes } from './genomes'
 
@@ -7,6 +6,7 @@ function App() {
     const [error, setError] = useState(false)
     const [loading, setLoading] = useState(false)
     const [drosophila, setDrosophila] = useState('')
+    const [message, setMessage] = useState('')
 
     const databaseSelect = () => {
         if (drosophila) {
@@ -36,6 +36,8 @@ function App() {
     const validate = values => {
         const errors = {}
 
+        const outRegex = /^(.*\.html|[^.]+)$/
+
         const {query, db, out} = values
 
         if (!query) {
@@ -48,6 +50,8 @@ function App() {
 
         if (!out) {
             errors.out = 'Output name is required'
+        } else if (!outRegex.test(out)) {
+            errors.out = 'Output name must end with .html or have no extension'
         }
 
         return errors
@@ -71,16 +75,19 @@ function App() {
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error()
+                return response.json().then(errorResponse => {
+                    throw new Error(errorResponse.message)
+                })
             }
             
             return response.blob()
         })
         .then(data => {
-            window.open('https://${window.location.hostname}/results', '_blank')
+            window.open(`https://${window.location.hostname}/results/${out}`, '_blank')
         })
         .catch(error => {
             setError(true)
+            setMessage(error.message)
         })
         .finally(() => {
             setLoading(false)
@@ -115,7 +122,7 @@ function App() {
                                 </div>
                             )}
                             {error && (
-                                <div className='alert alert-danger mt-5'>Error creating output file</div>
+                                <div className='alert alert-danger mt-5'>{message}</div>
                             )}
                         </div>
                         <a href={`https://${window.location.hostname}/results`} className='link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover mt-3'>Results</a>

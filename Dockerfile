@@ -18,6 +18,7 @@ RUN apt-get update && \
     pip install --no-cache-dir -r requirements.txt && \
     npm install --prefix static && \
     npm run build --prefix static && \
+    rm -rf static/node_modules && \
     mv httpd.conf /etc/apache2/sites-available/httpd.conf && \
     a2dissite 000-default.conf && \
     a2enmod ssl && \

@@ -6,6 +6,7 @@ from typing import Dict
 from werkzeug.datastructures import FileStorage
 from exit import Exit
 from flask.views import MethodView
+from os.path import exists
 
 blueprint = Blueprint('blast', __name__)
 
@@ -19,7 +20,10 @@ class Blast(MethodView, Container):
         :param files:
         :param form:
         """
-        try:
-            self.run(files['query'].filename, form['db'], form['out'])
-        except Exit as message:
-            abort(400, message=message.__str__())
+        if not exists(f"results/{form['out']}"):
+            try:
+                self.run(files['query'].filename, form['db'], form['out'])
+            except Exit as message:
+                abort(400, message=message.__str__())
+        else:
+            abort(400, message='BLAST output name already exists')

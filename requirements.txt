@@ -2,3 +2,4 @@ flask
 flask-smorest
 docker
 flask-cors
+requests==2.31.0
