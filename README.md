@@ -107,16 +107,16 @@
 
 | File                                                                                   | Summary                         |
 | ---                                                                                    | ---                             |
-| [config.json](https://github.com/BioCloudLabs/blast/blob/master/config.json)           | <code>► INSERT-TEXT-HERE</code> |
-| [Dockerfile](https://github.com/BioCloudLabs/blast/blob/master/Dockerfile)             | <code>► INSERT-TEXT-HERE</code> |
-| [start.sh](https://github.com/BioCloudLabs/blast/blob/master/start.sh)                 | <code>► INSERT-TEXT-HERE</code> |
-| [exit.py](https://github.com/BioCloudLabs/blast/blob/master/exit.py)                   | <code>► INSERT-TEXT-HERE</code> |
-| [httpd.conf](https://github.com/BioCloudLabs/blast/blob/master/httpd.conf)             | <code>► INSERT-TEXT-HERE</code> |
-| [blast.py](https://github.com/BioCloudLabs/blast/blob/master/blast.py)                 | <code>► INSERT-TEXT-HERE</code> |
-| [app.wsgi](https://github.com/BioCloudLabs/blast/blob/master/app.wsgi)                 | <code>► INSERT-TEXT-HERE</code> |
-| [requirements.txt](https://github.com/BioCloudLabs/blast/blob/master/requirements.txt) | <code>► INSERT-TEXT-HERE</code> |
-| [app.py](https://github.com/BioCloudLabs/blast/blob/master/app.py)                     | <code>► INSERT-TEXT-HERE</code> |
-| [container.py](https://github.com/BioCloudLabs/blast/blob/master/container.py)         | <code>► INSERT-TEXT-HERE</code> |
+| [config.json](https://github.com/BioCloudLabs/blast/blob/master/config.json)           | <code>Configuration file containing settings and parameters for the application.</code> |
+| [Dockerfile](https://github.com/BioCloudLabs/blast/blob/master/Dockerfile)             | <code>Instructions to build a Docker image for the application.</code> |
+| [start.sh](https://github.com/BioCloudLabs/blast/blob/master/start.sh)                 | <code>Shell script to start the application.</code> |
+| [exit.py](https://github.com/BioCloudLabs/blast/blob/master/exit.py)                   | <code>Python script to handle application shutdown or cleanup processes.</code> |
+| [httpd.conf](https://github.com/BioCloudLabs/blast/blob/master/httpd.conf)             | <code>Configuration file for the Apache HTTP Server.</code> |
+| [blast.py](https://github.com/BioCloudLabs/blast/blob/master/blast.py)                 | <code>Main application logic implemented in Python.</code> |
+| [app.wsgi](https://github.com/BioCloudLabs/blast/blob/master/app.wsgi)                 | <code>WSGI entry point for serving the Python application.</code> |
+| [requirements.txt](https://github.com/BioCloudLabs/blast/blob/master/requirements.txt) | <code>List of Python dependencies required by the application.</code> |
+| [app.py](https://github.com/BioCloudLabs/blast/blob/master/app.py)                     | <code>Python script defining the web application and routes.</code> |
+| [container.py](https://github.com/BioCloudLabs/blast/blob/master/container.py)         | <code>Python script managing container-specific logic or interactions.</code> |
 
 </details>
 
