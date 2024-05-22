@@ -124,8 +124,8 @@
 
 | File                                                                          | Summary                         |
 | ---                                                                           | ---                             |
-| [files.py](https://github.com/BioCloudLabs/blast/blob/master/schema/files.py) | <code>► INSERT-TEXT-HERE</code> |
-| [form.py](https://github.com/BioCloudLabs/blast/blob/master/schema/form.py)   | <code>► INSERT-TEXT-HERE</code> |
+| [files.py](https://github.com/BioCloudLabs/blast/blob/master/schema/files.py) | <code>Defines the schema or structure for handling file-related data.</code> |
+| [form.py](https://github.com/BioCloudLabs/blast/blob/master/schema/form.py)   | <code>Defines the schema or structure for handling form-related data.</code> |
 
 </details>
 
@@ -133,7 +133,7 @@
 
 | File                                                                                  | Summary                         |
 | ---                                                                                   | ---                             |
-| [package.json](https://github.com/BioCloudLabs/blast/blob/master/static/package.json) | <code>► INSERT-TEXT-HERE</code> |
+| [package.json](https://github.com/BioCloudLabs/blast/blob/master/static/package.json) | <code>Configuration file for managing JavaScript dependencies and scripts for the static assets of the application.</code> |
 
 </details>
 
