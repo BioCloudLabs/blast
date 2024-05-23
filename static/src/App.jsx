@@ -7,6 +7,11 @@ function App() {
     const [loading, setLoading] = useState(false)
     const [drosophila, setDrosophila] = useState('')
     const [message, setMessage] = useState('')
+    const [file, setFile] = useState(null)
+
+    const handleFileChange = (event) => {
+        setFile(event.target.files[0])
+    }
 
     const databaseSelect = () => {
         if (drosophila) {
@@ -28,7 +33,6 @@ function App() {
     };
     
     const initialValues = { 
-        query: undefined, 
         db: '', 
         out: ''
     }
@@ -38,9 +42,9 @@ function App() {
 
         const outRegex = /^(.*\.html|[^.]+)$/
 
-        const {query, db, out} = values
+        const { db, out } = values
 
-        if (!query) {
+        if (!file) {
             errors.query = 'Query is required'
         }
 
@@ -58,14 +62,13 @@ function App() {
     }
 
     const onSubmit = (values, actions) => {
-        const { query, db, out } = values
+        const { db, out } = values
 
         setLoading(true)
         setError(false)
 
         const formData = new FormData()
-
-        formData.append('query', new File([query], query.name))
+        formData.append('query', file)
         formData.append('db', db)
         formData.append('out', out)
 
@@ -94,6 +97,7 @@ function App() {
             actions.setSubmitting(false)
         })
     }
+
     return (
         <>
             <Formik initialValues={initialValues} validate={validate} onSubmit={onSubmit}>
@@ -102,7 +106,7 @@ function App() {
                         <div className='border p-5 mx-5 rounded'>
                             <div className='fs-2 mb-5'>Basic Local Alignment Search Tool</div>
                             <Form>
-                                <Field id="query" name="query" type="file" className="form-control fw-lighter mb-1" />
+                                <input id="query" name="query" type="file" className="form-control fw-lighter mb-1" onChange={handleFileChange} />
                                 <ErrorMessage name='query' component='div' className='text-danger' />
                                 <Field as="select" value={drosophila} className="form-select fw-lighter text-center mt-3 mb-1" onChange={(event) => setDrosophila(event.target.value)}>
                                     <option value=''>Select Drosophila's Database</option>
