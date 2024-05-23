@@ -35,13 +35,9 @@
 > - [📍 Overview](#-overview)
 > - [📦 Features](#-features)
 > - [📂 Repository Structure](#-repository-structure)
-> - [🧩 Modules](#-modules)
 > - [🚀 Getting Started](#-getting-started)
 >   - [⚙️ Installation](#️-installation)
 >   - [🤖 Running blast](#-running-blast)
->   - [🧪 Tests](#-tests)
-> - [🛠 Project Roadmap](#-project-roadmap)
-> - [🤝 Contributing](#-contributing)
 > - [📄 License](#-license)
 > - [👏 Acknowledgments](#-acknowledgments)
 
@@ -49,18 +45,16 @@
 
 ## 📍 Overview
 
-<code>BLAST is a crucial tool in bioinformatics, enabling researchers to quickly and efficiently identify sequences with high similarity, predict functions of unknown sequences, and explore evolutionary relationships. Its algorithm balances sensitivity and speed, making it suitable for analyzing large datasets.</code>
+<code>BioCloudLabs BLAST is a crucial API in bioinformatics, enabling researchers to quickly and efficiently identify sequences with high similarity, predict functions of unknown sequences, and explore evolutionary relationships in Azure</code>
 
 ---
 
 ## 📦 Features
 
 <code>
-─ High Speed: Optimized algorithms for rapid results with large databases.
-─ Adjustable Sensitivity: User-configurable parameters to balance sensitivity and precision.
-─ Multi-Format Compatibility: Supports various common bioinformatics sequence formats.
-─ Visual Results: Generates graphical alignments and visualizations.
-─ Public Database Access: Integrates with numerous public biological sequence databases.
+─ High Speed: Optimized algorithms for rapid results with large databases stored in Azure.
+─ Visual Results: Generates html alignments for visualize.
+─ Public Database Access: Integrates with numerous public Drosophila sequence databases.
 ─ Filtering Tools: Options to refine and filter searches for specific results.
 </code>
 
@@ -101,51 +95,13 @@
 
 ---
 
-## 🧩 Modules
-
-<details closed><summary>.</summary>
-
-| File                                                                                   | Summary                         |
-| ---                                                                                    | ---                             |
-| [config.json](https://github.com/BioCloudLabs/blast/blob/master/config.json)           | <code>Configuration file containing settings and parameters for the application.</code> |
-| [Dockerfile](https://github.com/BioCloudLabs/blast/blob/master/Dockerfile)             | <code>Instructions to build a Docker image for the application.</code> |
-| [start.sh](https://github.com/BioCloudLabs/blast/blob/master/start.sh)                 | <code>Shell script to start the application.</code> |
-| [exit.py](https://github.com/BioCloudLabs/blast/blob/master/exit.py)                   | <code>Python script to handle application shutdown or cleanup processes.</code> |
-| [httpd.conf](https://github.com/BioCloudLabs/blast/blob/master/httpd.conf)             | <code>Configuration file for the Apache HTTP Server.</code> |
-| [blast.py](https://github.com/BioCloudLabs/blast/blob/master/blast.py)                 | <code>Main application logic implemented in Python.</code> |
-| [app.wsgi](https://github.com/BioCloudLabs/blast/blob/master/app.wsgi)                 | <code>WSGI entry point for serving the Python application.</code> |
-| [requirements.txt](https://github.com/BioCloudLabs/blast/blob/master/requirements.txt) | <code>List of Python dependencies required by the application.</code> |
-| [app.py](https://github.com/BioCloudLabs/blast/blob/master/app.py)                     | <code>Python script defining the web application and routes.</code> |
-| [container.py](https://github.com/BioCloudLabs/blast/blob/master/container.py)         | <code>Python script managing container-specific logic or interactions.</code> |
-
-</details>
-
-<details closed><summary>schema</summary>
-
-| File                                                                          | Summary                         |
-| ---                                                                           | ---                             |
-| [files.py](https://github.com/BioCloudLabs/blast/blob/master/schema/files.py) | <code>Defines the schema or structure for handling file-related data.</code> |
-| [form.py](https://github.com/BioCloudLabs/blast/blob/master/schema/form.py)   | <code>Defines the schema or structure for handling form-related data.</code> |
-
-</details>
-
-<details closed><summary>static</summary>
-
-| File                                                                                  | Summary                         |
-| ---                                                                                   | ---                             |
-| [package.json](https://github.com/BioCloudLabs/blast/blob/master/static/package.json) | <code>Configuration file for managing JavaScript dependencies and scripts for the static assets of the application.</code> |
-
-</details>
-
----
-
 ## 🚀 Getting Started
 
 ***Requirements***
 
 Ensure you have the following dependencies installed on your system:
 
-* **Python**: `version x.y.z`
+* **Python**: `version 3.10`
 
 ### ⚙️ Installation
 
@@ -165,6 +121,7 @@ cd blast
 
 ```sh
 pip install -r requirements.txt
+npm install --prefix static
 ```
 
 ### 🤖 Running blast
@@ -172,73 +129,23 @@ pip install -r requirements.txt
 Use the following command to run blast:
 
 ```sh
-python main.py
+npm run dev
+python app.py
 ```
-
-### 🧪 Tests
-
-To execute tests, run:
-
-```sh
-pytest
-```
-
----
-
-## 🛠 Project Roadmap
-
-- [X] `► INSERT-TASK-1`
-- [ ] `► INSERT-TASK-2`
-- [ ] `► ...`
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Here are several ways you can contribute:
-
-- **[Submit Pull Requests](https://github.com/BioCloudLabs/blast/blob/main/CONTRIBUTING.md)**: Review open PRs, and submit your own PRs.
-- **[Join the Discussions](https://github.com/BioCloudLabs/blast/discussions)**: Share your insights, provide feedback, or ask questions.
-- **[Report Issues](https://github.com/BioCloudLabs/blast/issues)**: Submit bugs found or log feature requests for Blast.
-
-<details closed>
-    <summary>Contributing Guidelines</summary>
-
-1. **Fork the Repository**: Start by forking the project repository to your GitHub account.
-2. **Clone Locally**: Clone the forked repository to your local machine using a Git client.
-   ```sh
-   git clone https://github.com/BioCloudLabs/blast
-   ```
-3. **Create a New Branch**: Always work on a new branch, giving it a descriptive name.
-   ```sh
-   git checkout -b new-feature-x
-   ```
-4. **Make Your Changes**: Develop and test your changes locally.
-5. **Commit Your Changes**: Commit with a clear message describing your updates.
-   ```sh
-   git commit -m 'Implemented new feature x.'
-   ```
-6. **Push to GitHub**: Push the changes to your forked repository.
-   ```sh
-   git push origin new-feature-x
-   ```
-7. **Submit a Pull Request**: Create a PR against the original project repository. Clearly describe the changes and their motivations.
-
-Once your PR is reviewed and approved, it will be merged into the main branch.
-
-</details>
 
 ---
 
 ## 📄 License
 
-This project is protected under the [SELECT-A-LICENSE](https://choosealicense.com/licenses) License. For more details, refer to the [LICENSE](https://choosealicense.com/licenses/) file.
+This project is protected under the [MIT License](https://choosealicense.com/licenses) License.
 
 ---
 
-## 👏 Acknowledgments
+## 👏 Contributors
 
-- List any resources, contributors, inspiration, etc. here.
+- Aymane El Hanbali
+- Christian González Acosta
+- Albert Martín Moreno
 
 [**Return**](#-quick-links)
 
