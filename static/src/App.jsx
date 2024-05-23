@@ -1,18 +1,22 @@
-import { Formik, Field, Form, ErrorMessage } from 'formik'
-import { useState } from 'react'
-import { genomes } from './genomes'
+import { Formik, Field, Form, ErrorMessage } from 'formik';  // Importing Formik components for form handling
+import { useState } from 'react';  // Importing useState hook for managing component state
+import { genomes } from './genomes';  // Importing genomes data
 
+// Main component
 function App() {
-    const [error, setError] = useState(false)
-    const [loading, setLoading] = useState(false)
-    const [drosophila, setDrosophila] = useState('')
-    const [message, setMessage] = useState('')
-    const [file, setFile] = useState(null)
+    // State variables
+    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [drosophila, setDrosophila] = useState('');
+    const [message, setMessage] = useState('');
+    const [file, setFile] = useState(null);
 
+    // Handle file input change
     const handleFileChange = (event) => {
-        setFile(event.target.files[0])
-    }
+        setFile(event.target.files[0]);
+    };
 
+    // Render the database select options based on selected drosophila
     const databaseSelect = () => {
         if (drosophila) {
             return (
@@ -20,11 +24,12 @@ function App() {
                     <Field as="select" id="db" name="db" className="form-select fw-lighter text-center mt-3 mb-1">
                         <option>Select Drosophila's FASTA</option>
                         {Object.entries(genomes).map(([key, value]) => {
-                            if (key == drosophila) {
-                                return value.map((fasta, index) => {
-                                    return <option value={fasta} key={index}>{fasta}</option>
-                                })
+                            if (key === drosophila) {
+                                return value.map((fasta, index) => (
+                                    <option value={fasta} key={index}>{fasta}</option>
+                                ));
                             }
+                            return null;
                         })}
                     </Field>
                 </>
@@ -32,45 +37,46 @@ function App() {
         }
     };
     
+    // Initial form values
     const initialValues = { 
         db: '', 
         out: ''
-    }
+    };
 
+    // Form validation function
     const validate = values => {
-        const errors = {}
-
-        const outRegex = /^(.*\.html|[^.]+)$/
-
-        const { db, out } = values
+        const errors = {};
+        const outRegex = /^(.*\.html|[^.]+)$/;
+        const { db, out } = values;
 
         if (!file) {
-            errors.query = 'Query is required'
+            errors.query = 'Query is required';
         }
 
         if (!db) {
-            errors.db = 'Database is required'
+            errors.db = 'Database is required';
         }
 
         if (!out) {
-            errors.out = 'Output name is required'
+            errors.out = 'Output name is required';
         } else if (!outRegex.test(out)) {
-            errors.out = 'Output name must end with .html or have no extension'
+            errors.out = 'Output name must end with .html or have no extension';
         }
 
-        return errors
-    }
+        return errors;
+    };
 
+    // Form submission handler
     const onSubmit = (values, actions) => {
-        const { db, out } = values
+        const { db, out } = values;
 
-        setLoading(true)
-        setError(false)
+        setLoading(true);
+        setError(false);
 
-        const formData = new FormData()
-        formData.append('query', file)
-        formData.append('db', db)
-        formData.append('out', out)
+        const formData = new FormData();
+        formData.append('query', file);
+        formData.append('db', db);
+        formData.append('out', out);
 
         fetch(`https://${window.location.hostname}/blast`, {
             method: 'POST',
@@ -79,24 +85,24 @@ function App() {
         .then(response => {
             if (!response.ok) {
                 return response.json().then(errorResponse => {
-                    throw new Error(errorResponse.message)
-                })
+                    throw new Error(errorResponse.message);
+                });
             }
             
-            return response.blob()
+            return response.blob();
         })
         .then(data => {
-            window.open(`https://${window.location.hostname}/results/${out}`, '_blank')
+            window.open(`https://${window.location.hostname}/results/${out}`, '_blank');
         })
         .catch(error => {
-            setError(true)
-            setMessage(error.message)
+            setError(true);
+            setMessage(error.message);
         })
         .finally(() => {
-            setLoading(false)
-            actions.setSubmitting(false)
-        })
-    }
+            setLoading(false);
+            actions.setSubmitting(false);
+        });
+    };
 
     return (
         <>
@@ -121,8 +127,8 @@ function App() {
                                 <button type="submit" disabled={isSubmitting} className='btn btn-outline-primary fw-lighter mt-3'>Submit</button>
                             </Form>
                             {loading && (
-                                <div class="spinner-border mt-5" role="status">
-                                    <span class="visually-hidden">Loading...</span>
+                                <div className="spinner-border mt-5" role="status">
+                                    <span className="visually-hidden">Loading...</span>
                                 </div>
                             )}
                             {error && (
@@ -134,7 +140,7 @@ function App() {
                 )}
             </Formik>
         </>
-    )
+    );
 }
 
-export default App
+export default App;
